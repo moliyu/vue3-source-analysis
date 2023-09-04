@@ -4,3 +4,4 @@
 
 - [x] reactive
 - [x] ref
+- [x] computed

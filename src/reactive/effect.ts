@@ -1,7 +1,12 @@
 const effectStack = []
 let activeEffect
 
-export function effect(fn) {
+type EffectOption = {
+  lazy?: boolean
+  scheduler?: () => void
+}
+
+export function effect(fn, options: EffectOption = {}) {
   const effectFn = () => {
     try {
       activeEffect = effectFn
@@ -13,11 +18,17 @@ export function effect(fn) {
       activeEffect = effectStack[effectStack.length - 1]
     }
   }
-  effectFn()
+  if (!options.lazy) {
+    effectFn()
+  }
+  effectFn.scheduler = options.scheduler
   return effectFn
 }
 
-const targetMap: WeakMap<any, Map<any, Set<Function>>> = new WeakMap()
+const targetMap: WeakMap<
+  any,
+  Map<any, Set<Function & { scheduler: () => void }>>
+> = new WeakMap()
 export function track(target, key) {
   if (!activeEffect) return
   let depsMap = targetMap.get(target)
@@ -37,6 +48,10 @@ export function trigger(target, key) {
   const deps = depsMap.get(key)
   if (!deps) return
   deps.forEach((effectFn) => {
-    effectFn()
+    if (effectFn.scheduler) {
+      effectFn.scheduler()
+    } else {
+      effectFn()
+    }
   })
 }

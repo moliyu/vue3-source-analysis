@@ -1,4 +1,4 @@
-import { effect, reactive } from "@/reactive"
+import { computed, effect, reactive } from "@/reactive"
 
 const original = { count: 0, count1: 1 }
 const obj = reactive(original)
@@ -19,5 +19,12 @@ effect(() => {
   console.log("count0 is :", obj.count)
 })
 
+const computedCount = computed(() => {
+  console.log("重新计算")
+  return obj.count
+})
+
 // @ts-ignore
 window._obj = obj
+// @ts-ignore
+window._computedCount = computedCount
