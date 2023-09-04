@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext","DOM"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*":["src/*"]
+    },
+    "types": ["vitest/globals"]
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
