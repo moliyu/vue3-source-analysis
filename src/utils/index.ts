@@ -7,3 +7,13 @@ export function hasChanged(oldValue, value) {
 }
 
 export const isArray = Array.isArray
+
+export function isString(val): val is string {
+  return typeof val === "string"
+}
+export function isNumber(val): val is number {
+  return typeof val === "number"
+}
+export function isBoolean(val): val is boolean {
+  return typeof val === "boolean"
+}
